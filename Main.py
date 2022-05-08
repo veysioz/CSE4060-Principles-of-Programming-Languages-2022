@@ -80,9 +80,62 @@ def find_relationship(fn, fs, sn, ss):
         
         if first.father == p.name or first.mother == p.name:
             for p1 in tree:
-                if p.father == p1.father and p.mother == p1.mother and p1.name == second.name and p1.surname == second.surname:
-                    return 'yeğeni'
-                    
+                if p.father == p1.father and p.mother == p1.mother:
+                    if p1.name == second.name and p1.surname == second.surname:
+                        return 'yeğeni'
+                    for p2 in tree:
+                        if (p2.father == p1.name or p2.mother == p1.name) and p2.name == second.name and p2.surname == second.surname:
+                            return 'kuzeni'
+        
+        if first.name == p.father:
+            for p1 in tree:
+                if p1.name == p.mother and p1.father == second.father and p1.mother == second.mother:
+                    return 'eniştesi'
+                elif (p.name == p1.father and second.name == p1.mother) or (p.name == p1.mother and second.name == p1.father):
+                    return 'kayınpederi'
+                elif p1.name == p.mother and (second.name == p1.father or second.name == p1.mother):
+                    return 'damadı'
+                elif p1.name == p.mother:
+                    for p2 in tree:
+                        if p1.father == p2.father and p1.mother == p2.mother and p2.gender == 'F':
+                            for p3 in tree:
+                                if p2.name == p3.mother:
+                                    for p4 in tree:
+                                        if p4.name == p3.father and second.name == p4.name and second.surname == p4.surname:
+                                            return 'bacanağı'
+        elif first.name == p.mother:
+            for p1 in tree:
+                if p1.name == p.father and p1.father == second.father and p1.mother == second.mother:
+                    return 'yengesi'
+                elif (p.name == p1.father and second.name == p1.mother) or (p.name == p1.mother and second.name == p1.father):
+                    return 'kayınvalidesi'
+                elif p1.name == p.father and (second.name == p1.father or second.name == p1.mother):
+                    return 'gelini'
+                elif p1.name == p.father:
+                    for p2 in tree:
+                        if p1.father == p2.father and p1.mother == p2.mother and p2.gender == 'M':
+                            for p3 in tree:
+                                if p2.name == p3.father:
+                                    for p4 in tree:
+                                        if p4.name == p3.mother and second.name == p4.name and second.surname == p4.surname:
+                                            return 'eltisi'
+        elif first.father == p.father and first.mother == p.mother and first.gender == 'F' and p.gender == 'F':
+            for p1 in tree:
+                if p.name == p1.mother:
+                    for p2 in tree:
+                        if p2.name == p1.father and second.name == p2.name and second.surname == p2.surname:
+                            return 'baldızı'
+        elif first.gender == 'M' and first.father == p.father and first.mother == p.mother:
+            for p1 in tree:
+                if p1.mother == p.name:
+                    for p2 in tree:
+                        if p2.name == p1.father and p2.name == second.name and p2.surname == second.surname:
+                            return 'kayınbiraderi'
+                if p1.father == p.name:
+                    for p2 in tree:
+                        if p2.name == p1.mother and p2.name == second.name and p2.surname == second.surname:
+                            return 'kayınbiraderi'
+
     return -2
 
 def generate_tree():
@@ -108,7 +161,10 @@ def generate_tree():
     tree.append(Person('M', 'Yasin', 'Demir', datetime.date(1990,1,1), None, 'Mehmet', 'Beyza', 0))
     tree.append(Person('F', 'Tuğba', 'Demir', datetime.date(1995,1,1), None, 'Mehmet', 'Beyza', 0))
     # 2
-    tree.append(Person('M', 'Osman', 'Yılmaz', datetime.date(1970,1,1), None, 'Ali', 'Ayşe', 0))
+    tree.append(Person('M', 'Osman', 'Yılmaz', datetime.date(1970,1,1), None, 'Ali', 'Ayşe', 1))
+    tree.append(Person('F', 'Betül', 'Yılmaz', datetime.date(1973,1,1), None, 'Cahit', 'Halide', 1))
+    # 3
+    tree.append(Person('M', 'Ayaz', 'Yılmaz', datetime.date(2006,1,1), None, 'Osman', 'Betül', 0))
 
 def user_interface():
     os.system('CLS')
