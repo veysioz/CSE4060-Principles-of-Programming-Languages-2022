@@ -1,3 +1,8 @@
+# Veysi Öz - 150116005
+# Enes Garip - 150116034
+# Ahmet Tunahan Cinsoy - 150117062
+# Abbas Göktuğ Yılmaz - 150115061
+
 import datetime
 import os
 import json
